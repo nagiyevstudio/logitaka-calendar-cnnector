@@ -17,14 +17,14 @@ android {
     namespace = "at.bitfire.icsdroid"
 
     defaultConfig {
-        applicationId = "at.bitfire.icsdroid"
+        applicationId = "com.logitaka.calendar.connector"
         minSdk = 23
         targetSdk = 36
 
         versionCode = 92
         versionName = "2.4.3"
 
-        setProperty("archivesBaseName", "icsx5-$versionCode-$versionName")
+        setProperty("archivesBaseName", "logitaka-calendar-connector-$versionCode-$versionName")
 
         testInstrumentationRunner = "at.bitfire.icsdroid.HiltTestRunner"
 
@@ -80,8 +80,14 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 
-            productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("bitfire_apk")
-            productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("bitfire_aab")
+            val hasKeystoreEnv = System.getenv("ANDROID_KEYSTORE") != null
+            if (hasKeystoreEnv) {
+                productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("bitfire_apk")
+                productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("bitfire_aab")
+            } else {
+                productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("debug")
+                productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("debug")
+            }
         }
     }
 

@@ -49,16 +49,36 @@ private fun calculateInitialDestination(intent: Intent): Destination {
         ?.toString()
     val data = intent.dataString
 
+    val rawUrl = text ?: stream ?: data
+    val resolvedUrl = if (rawUrl != null) {
+        if (rawUrl.startsWith("logitaka-cal://")) {
+            var token = rawUrl.substring("logitaka-cal://".length)
+            if (token.startsWith("feed/")) {
+                token = token.substring("feed/".length)
+            }
+            token = token.substringBefore("?").substringBefore("/")
+            if (token.isNotEmpty()) {
+                "https://app.logitaka.com/api/cal/feed/$token.ics"
+            } else {
+                rawUrl
+            }
+        } else {
+            rawUrl
+        }
+    } else {
+        null
+    }
+
     return if (extras.containsKey(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE)) {
         // If KEY_ACCOUNT_AUTHENTICATOR_RESPONSE was given, intent was launched from authenticator,
         // open the add subscription screen
         Destination.AddSubscription()
-    } else if (text != null || stream != null || data != null) {
+    } else if (resolvedUrl != null) {
         // If a URL was given, open the add subscription screen
         Destination.AddSubscription(
             title = extras.getString("title"),
             color = extras.takeIf { it.containsKey("color") }?.getInt("color", -1),
-            url = text ?: stream ?: data
+            url = resolvedUrl
         )
     } else {
         // If no condition matches, show the subscriptions list

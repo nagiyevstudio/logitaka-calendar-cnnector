@@ -6,11 +6,11 @@ package at.bitfire.icsdroid.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val lightblue = Color(0xff039be5)
-val darkblue = Color(0xff01579b)
-val superlightblue = Color(0xffe0f3ff)
+val lightblue = Color(0xffff4500)      // Logitaka Accent OrangeRed
+val darkblue = Color(0xffcc3700)       // Logitaka Dark Accent
+val superlightblue = Color(0xfff9f8f6)  // Logitaka Surface Light
 val red = Color(0xffff2200)
 
-val offwhite = Color(0xfffcfcff)
-val lightgrey = Color(0xffdee3ea)
-val nearlyBlack = Color(0xff1d1d1d)
+val offwhite = Color(0xfff0ede9)       // Logitaka Background Light
+val lightgrey = Color(0xffd6d1ca)      // Logitaka Border Light
+val nearlyBlack = Color(0xff111318)    // Logitaka Background Dark
