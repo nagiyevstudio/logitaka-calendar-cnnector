@@ -59,16 +59,32 @@ android {
 
     signingConfigs {
         create("bitfire_apk") {
-            storeFile = file(System.getenv("ANDROID_KEYSTORE") ?: "/dev/null")
-            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("ANDROID_KEY_ALIAS")
-            keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            val keystorePath = System.getenv("ANDROID_KEYSTORE")
+            if (keystorePath != null) {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            } else {
+                storeFile = file("${project.rootDir.absolutePath}/debug.keystore")
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
         create("bitfire_aab") {
-            storeFile = file(System.getenv("ANDROID_KEYSTORE") ?: "/dev/null")
-            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
-            keyAlias = System.getenv("UPLOAD_KEY_ALIAS")
-            keyPassword = System.getenv("UPLOAD_KEY_PASSWORD")
+            val keystorePath = System.getenv("ANDROID_KEYSTORE")
+            if (keystorePath != null) {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("UPLOAD_KEY_ALIAS")
+                keyPassword = System.getenv("UPLOAD_KEY_PASSWORD")
+            } else {
+                storeFile = file("${project.rootDir.absolutePath}/debug.keystore")
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+            }
         }
     }
 
@@ -80,14 +96,8 @@ android {
             isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
 
-            val hasKeystoreEnv = System.getenv("ANDROID_KEYSTORE") != null
-            if (hasKeystoreEnv) {
-                productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("bitfire_apk")
-                productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("bitfire_aab")
-            } else {
-                productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("debug")
-                productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("debug")
-            }
+            productFlavors.getByName("standard").signingConfig = signingConfigs.getByName("bitfire_apk")
+            productFlavors.getByName("gplay").signingConfig = signingConfigs.getByName("bitfire_aab")
         }
     }
 
