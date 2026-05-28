@@ -34,8 +34,8 @@ private val DarkColors = darkColorScheme(
     tertiaryContainer = lightblue,
     onTertiaryContainer = offwhite,
     background = nearlyBlack,
-    surface = Color(0xff1a1f26),
-    surfaceVariant = Color(0xff2d3844),
+    surface = darkSurface,
+    surfaceVariant = darkSurfaceVariant,
     onBackground = offwhite,
     onSurface = offwhite,
 )
@@ -61,8 +61,8 @@ private val LightColors = lightColorScheme(
     surfaceContainerHigh = superlightblue,
     surfaceContainerHighest = superlightblue,
     surfaceVariant = lightgrey,
-    onBackground = Color(0xff36454f),
-    onSurface = Color(0xff36454f),
+    onBackground = lightText,
+    onSurface = lightText,
 )
 
 @Composable
